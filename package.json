@@ -1,0 +1,29 @@
+{
+  "name": "smallcase",
+  "version": "1.0.0",
+  "description": "assignment",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankitsingh2099/smallcase.git"
+  },
+  "keywords": [
+    "assignement",
+    "nodejs",
+    "mongodb",
+    "smallcase"
+  ],
+  "author": "Ankit Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ankitsingh2099/smallcase/issues"
+  },
+  "homepage": "https://github.com/ankitsingh2099/smallcase#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.5"
+  }
+}
