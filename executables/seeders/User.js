@@ -26,7 +26,7 @@ class SeedUsers{
             return console.error(err);
             onReject(err);
           } else {
-            console.log('Users table seeded successfully');
+            console.log('======Users table seeded successfully=====');
             onResolve();
           }
         })
