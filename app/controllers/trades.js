@@ -33,3 +33,20 @@ exports.update = function(req, res){
     }
   })
 };
+
+exports.delete = function(req, res){
+  const DeleteTrade = require(rootPrefix + '/app/services/Trade/delete');
+  let deleteTradeObj = new DeleteTrade(req.decodedParams);
+  
+  deleteTradeObj.perform().then(function(rsp){
+    if(!rsp){
+      res.status(500).json({});
+    } else {
+      if(rsp.error){
+        res.status(rsp.code).json(rsp);
+      } else {
+        res.status(200).json(rsp);
+      }
+    }
+  })
+};

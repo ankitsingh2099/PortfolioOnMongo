@@ -5,16 +5,12 @@ const rootPrefix = "../../..",
 const mongoose = require('mongoose');
 const Trade = mongoose.model('Trades');
 
-class Update extends ServiceBase{
+class Delete extends ServiceBase{
   constructor(params) {
     super();
     const oThis = this;
     
     oThis.tradeId = params.trade_id;
-    oThis.stockId = params.stock_id;
-    oThis.userId = params.user_id;
-    oThis.quantity = params.quantity;
-    oThis.buyPrice = params.buy_price;
   }
   
   /**
@@ -29,29 +25,12 @@ class Update extends ServiceBase{
     
     await oThis._getUserObject();
     
-    return oThis._updateTrade();
+    return oThis._deleteTrade();
   }
   
   async _validateAndSanitize(){
     const oThis = this;
     
-    if(!CommonValidator.validateNonNegativeNumber(oThis.quantity)){
-      return Promise.reject({
-        error: 'param_validation_failed',
-        paramter: 'quantity',
-        reason: 'quantity should be a number greater than 0',
-        code: 422
-      })
-    }
-    
-    if(!CommonValidator.validateNonNegativeDecimalUpto3Places(oThis.buyPrice)){
-      return Promise.reject({
-        error: 'param_validation_failed',
-        paramter: 'average_buy_price',
-        reason: 'average_buy_price should be a decimal number greater than 0 and should not have decimals more than 3',
-        code: 422
-      })
-    }
   }
   
   async _getUserObject() {
@@ -64,19 +43,12 @@ class Update extends ServiceBase{
    * @returns {Promise<unknown>}
    * @private
    */
-  async _updateTrade() {
+  async _deleteTrade() {
     const oThis = this;
-    
-    let newObject = {
-      user_id: oThis.userId,
-      stock_id: oThis.stockId,
-      shares_quantity: oThis.quantity,
-      buy_price: oThis.buyPrice
-    };
     
     // save model to database
     return new Promise(async function(onResolve, onReject){
-      Trade.findOneAndUpdate({_id: oThis.tradeId}, newObject, {upsert: true}, function (err, trade) {
+      Trade.findOneAndRemove({_id: oThis.tradeId}, {}, function (err, trade) {
         if (err) {
           console.error(err);
           onReject({error: 'Error while saving data', code: 500})
@@ -99,4 +71,4 @@ class Update extends ServiceBase{
   }
 }
 
-module.exports = Update;
+module.exports = Delete;

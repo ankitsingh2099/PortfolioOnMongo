@@ -8,5 +8,6 @@ const rootPrefix = "../..",
 router.get('/stocks', stocks.list);
 router.post('/trades/add', trades.add);
 router.post('/trades/update', trades.update);
+router.post('/trades/delete', trades.delete);
 
 module.exports = router;
