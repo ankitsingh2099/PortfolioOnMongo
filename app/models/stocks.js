@@ -1,6 +1,3 @@
-const rootPrefix = "../..",
-  mongooseConnectionProvider = require(rootPrefix + '/lib/providers/mongodb');
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 

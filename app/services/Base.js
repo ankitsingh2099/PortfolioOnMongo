@@ -13,10 +13,14 @@ class Base{
     return oThis._asyncPerform().catch(async function(err) {
       console.error("There is an error in the service");
       console.error(err);
-      return {
-        error: 'INTERNAL_SERVER_ERROR',
-        code: 500
+      if(!err){
+        return {
+          error: 'INTERNAL_SERVER_ERROR',
+          code: 500
+        }
       }
+      return err;
+      
     })
   }
   
