@@ -6,7 +6,7 @@ exports.add = function(req, res) {
   
   addTradeObj.perform().then(function(rsp){
     if(!rsp){
-      res.status(500).json({});
+      res.status(500).json({success: false});
     } else {
       if(rsp.error){
         res.status(rsp.code).json(rsp);

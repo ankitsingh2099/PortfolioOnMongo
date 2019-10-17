@@ -1,3 +1,4 @@
+const BigNumber = require('bignumber.js');
 /**
  * Class for common validators.
  *
