@@ -9,22 +9,16 @@ const express = require('express'),
   customUrlParser = require('url'),
   URL = require('url').URL;
 
-const requestSharedNameSpace = createNamespace('pepoApiNameSpace');
+const requestSharedNameSpace = createNamespace('smallCaseApiNameSpace');
 
 const basicHelper = require(rootPrefix + '/helpers/basic'),
-  coreConstants = require(rootPrefix + '/config/coreConstants'),
+  coreConstants = require(rootPrefix + '/coreConstants'),
   customMiddleware = require(rootPrefix + '/helpers/customMiddleware'),
   sanitizer = require(rootPrefix + '/helpers/sanitizer');
 
-const apiRoutes = require(rootPrefix + '/routes/api/index'),
-  storeRoutes = require(rootPrefix + '/routes/storeApi/index'),
-  webhookRoutes = require(rootPrefix + '/routes/webhooks/index'),
-  elbHealthCheckerRoute = require(rootPrefix + '/routes/internal/elb_health_checker');
+const apiRoutes = require(rootPrefix + '/routes/api/index');
 
 //const errorConfig = basicHelper.fetchErrorConfig(apiVersions.v1);
-
-const pepoApiHostName = new URL(coreConstants.PA_DOMAIN).hostname;
-const pepoStoreApiHostName = new URL(coreConstants.PA_STORE_DOMAIN).hostname;
 
 morgan.token('id', function getId(req) {
   return req.id;
@@ -160,6 +154,5 @@ app.use(function(req, res, next) {
   };
   return res.status(404).json(payload);
 });
-
 
 module.exports = app;

@@ -23,8 +23,12 @@
   },
   "homepage": "https://github.com/ankitsingh2099/smallcase#readme",
   "dependencies": {
+    "continuation-local-storage": "^3.2.1",
     "express": "^4.17.1",
+    "helmet": "^3.21.1",
     "mongoose": "^5.7.5",
-    "sanitize-html": "^1.20.1"
+    "morgan": "^1.9.1",
+    "sanitize-html": "^1.20.1",
+    "uuid": "^3.3.3"
   }
 }

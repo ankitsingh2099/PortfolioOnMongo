@@ -9,15 +9,23 @@ const fs = require('fs'),
   http = require('http');
 
 const rootPrefix = '..',
-  app = require(rootPrefix + '/app'),
-  config = require(rootPrefix + '/config');
+  coreConstants = require(rootPrefix + '/coreConstants'),
+  models = join(__dirname, rootPrefix + '/app/models');
 
-const models = join(__dirname, 'app/models');
+const userName = coreConstants.MAIN_DB_MONGO_USER,
+  password = coreConstants.MAIN_DB_MONGO_PASSWORD,
+  endpoint = coreConstants.MAIN_DB_MONGO_HOST,
+  database = coreConstants.MAIN_DB_MONGO_NAME;
+
+let completeUri = "mongodb://" + userName + ":" + password + "@" + endpoint + '/' + database;
+connect();
 
 // Bootstrap models
 fs.readdirSync(models)
   .filter(file => ~file.search(/^[^.].*\.js$/))
   .forEach(file => require(join(models, file)));
+
+const app = require(rootPrefix + '/app');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -56,9 +64,11 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+function listen() {
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -108,5 +118,5 @@ function connect() {
     .on('error', console.log)
     .on('disconnected', connect)
     .once('open', listen);
-  return mongoose.connect(config.db, { keepAlive: 1, useNewUrlParser: true });
+  return mongoose.connect(completeUri, { keepAlive: 1, useNewUrlParser: true });
 }
