@@ -53,9 +53,8 @@ class Delete extends ServiceBase{
           console.error(err);
           onReject({error: 'Error while saving data', code: 500})
         }
-        console.log(" updated trade collection.");
-        onResolve({success: true, code: 200, tradeId: trade._id})
-        
+        console.log("deleted trade collection.");
+        onResolve({success: true, code: 200, tradeId: trade._id});
       });
     })
   }

@@ -4,6 +4,7 @@ const rootPrefix = "../../..",
 
 const mongoose = require('mongoose');
 const Trade = mongoose.model('Trades');
+const User = mongoose.model('Users');
 
 class Add extends ServiceBase{
   constructor(params) {
@@ -26,7 +27,9 @@ class Add extends ServiceBase{
     
     await oThis._validateAndSanitize();
     
-    await oThis._getUserObject();
+    //await oThis._fetchStockId();
+    
+    await oThis._getUserAndUpdateObject();
     
     return oThis._addTrade();
   }
@@ -53,8 +56,45 @@ class Add extends ServiceBase{
     }
   }
   
-  async _getUserObject() {
+  async _getUserAndUpdateObject() {
     const oThis = this;
+    
+    return new Promise(async function(onResolve, onReject){
+      User.findOne({user_id: oThis.userId},'user_id portfolio',{},function (err, user) {
+        if (err) {
+          console.error(err);
+          onReject({error: 'Error while saving data', code: 500})
+        }
+        console.log(" User fetched ");
+        console.log(user);
+        let existingInPortfolio = false;
+        for(let i = 0 ; i < user.portfolio.length ; i++){
+          if(user.portfolio[i].stock_id == oThis.stockId){
+            existingInPortfolio = true;
+            let existingQuantity = user.portfolio[i].quantity,
+              existingAvgPrice = user.portfolio[i].average_buy_price;
+            user.portfolio[i].quantity += parseInt(oThis.quantity);
+            let newAvgBuyPrice = ((existingQuantity * existingAvgPrice) + (oThis.buyPrice * oThis.quantity))/ (existingQuantity + oThis.quantity)
+            user.portfolio[i].average_buy_price = newAvgBuyPrice;
+          }
+        }
+        if(!existingInPortfolio){
+          let portfolio = {
+            stock_id: oThis.stockId,
+            quantity: oThis.quantity,
+            average_buy_price: oThis.buyPrice
+          };
+          user.portfolio.push(portfolio);
+        }
+        User.findOneAndUpdate({user_id: oThis.userId},user, {}, function (err, user){
+          if (err) {
+            console.error(err);
+            onReject({error: 'Error while updating portfolio data', code: 500})
+          }
+          onResolve();
+        });
+      });
+    })
   }
   
   /**
