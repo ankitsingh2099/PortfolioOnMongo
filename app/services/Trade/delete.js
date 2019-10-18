@@ -123,10 +123,16 @@ class Delete extends ServiceBase {
         let totalAmountForShares =
             parseFloat(oThis.userPortfolio[i].average_buy_price) * oThis.userPortfolio[i].quantity,
           oldTradeSharesAmount = oThis.oldtradeSharesQuantity * oThis.oldTradeBuyPrice,
-          currentSharesQuantity = oThis.userPortfolio[i].quantity - oThis.oldtradeSharesQuantity,
-          currentAverageBuyPrice = (totalAmountForShares - oldTradeSharesAmount) / currentSharesQuantity;
-        oThis.userPortfolio[i].average_buy_price = parseFloat(currentAverageBuyPrice).toFixed(3);
-        oThis.userPortfolio[i].quantity = currentSharesQuantity;
+          currentSharesQuantity = oThis.userPortfolio[i].quantity - oThis.oldtradeSharesQuantity;
+
+        if (currentSharesQuantity == 0) {
+          oThis.userPortfolio[i].average_buy_price = 0.0;
+          oThis.userPortfolio[i].quantity = 0;
+        } else {
+          let currentAverageBuyPrice = (totalAmountForShares - oldTradeSharesAmount) / currentSharesQuantity;
+          oThis.userPortfolio[i].average_buy_price = parseFloat(currentAverageBuyPrice).toFixed(3);
+          oThis.userPortfolio[i].quantity = currentSharesQuantity;
+        }
       }
     }
     oThis.user.portfolio = oThis.userPortfolio;
