@@ -1,31 +1,32 @@
-const rootPrefix = "../../../";
+const rootPrefix = '../../../';
 
 const mongoose = require('mongoose');
 
-class Base{
-  constructor() {
-  
-  }
-  
+class Base {
+  constructor() {}
+
   /**
    * Perform
    *
    * @returns {Promise<void | {code: number, success: boolean, error: string}>}
    */
-  perform(){
+  perform() {
     const oThis = this;
-    
+
     return oThis._asyncPerform().catch(async function(err) {
-      console.error("There is an error in the service");
+      console.error('There is an error in the service');
       console.error(err);
-        return {
-          success: false,
-          error: 'INTERNAL_SERVER_ERROR',
-          code: 500
-        }
-    })
+      if (err && !err.success) {
+        return err;
+      }
+      return {
+        success: false,
+        error: 'INTERNAL_SERVER_ERROR',
+        code: 500
+      };
+    });
   }
-  
+
   /**
    * Async Perform
    *

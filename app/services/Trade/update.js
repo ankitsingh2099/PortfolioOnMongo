@@ -41,7 +41,7 @@ class Update extends ServiceBase {
 
     await oThis._updateUserPortfolio();
 
-    return { success: true, code: 200, tradeId: oThis.tradeId };
+    return { success: true, code: 200, result_type: 'trade_id', trade_id: oThis.tradeId };
   }
 
   /**
@@ -57,7 +57,7 @@ class Update extends ServiceBase {
       return Promise.reject({
         success: false,
         error: 'param_validation_failed',
-        paramter: 'user_id',
+        parameter: 'user_id',
         reason: 'user id should be a number greater than 0',
         code: 422
       });
@@ -67,7 +67,7 @@ class Update extends ServiceBase {
       return Promise.reject({
         success: false,
         error: 'param_validation_failed',
-        paramter: 'quantity',
+        parameter: 'quantity',
         reason: 'quantity should be a number greater than 0',
         code: 422
       });
@@ -81,7 +81,7 @@ class Update extends ServiceBase {
       return Promise.reject({
         success: false,
         error: 'param_validation_failed',
-        paramter: 'average_buy_price',
+        parameter: 'average_buy_price',
         reason: 'average_buy_price should be a decimal number greater than 0 and should not have decimals more than 3',
         code: 422
       });
@@ -137,7 +137,7 @@ class Update extends ServiceBase {
       User.findOne({ user_id: oThis.userId }, 'user_id portfolio', {}, function(err, user) {
         if (err) {
           console.error(err);
-          onReject({ success: false, error: 'Error while fetchin data', code: 500 });
+          onReject({ success: false, error: 'Error while fetching data', code: 500 });
         }
         if (user) {
           oThis.user = user;
