@@ -205,12 +205,7 @@ class Update extends ServiceBase {
     }
 
     if (!alreadyBoughtShare) {
-      let sharesData = {
-        quantity: oThis.quantity,
-        average_buy_price: oThis.buyPrice,
-        stock_id: oThis.stockId
-      };
-      oThis.user.portfolio.push(sharesData);
+      return Promise.reject({ success: false, error: 'Trade for give stock symbol does not exist.', code: 422 });
     } else {
       oThis.user.portfolio = oThis.userPortfolio;
     }
@@ -219,7 +214,7 @@ class Update extends ServiceBase {
       User.findOneAndUpdate({ user_id: oThis.userId }, oThis.user, {}, function(err, user) {
         if (err) {
           console.error(err);
-          onReject({ error: 'Error while updating data', code: 500 });
+          onReject({ success: false, error: 'Error while updating data', code: 500 });
         }
         console.log(' updated users portfolio.');
         onResolve({});
