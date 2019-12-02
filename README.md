@@ -1,4 +1,4 @@
-# Smallcase
+# Portfolio on Mongo
 
 ### Mongo Server
 Run the mongo server and set the following environment variables.
